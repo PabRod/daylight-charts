@@ -46,7 +46,9 @@ get_sunlight_times <- function(lat, lon, case) {
   output <- getSunlightTimes(date = dates, lat = lat, lon = lon, tz = case$tz, keep = keep)
   output <- mutate(output, date = as_date(date))
   output <- mutate(output, sunrise_decimal = hour(sunrise) + case$shift + minute(sunrise)/60 + second(sunrise)/3600)
+  output <- mutate(output, sunrise = sunrise + hours(case$shift))
   output <- mutate(output, sunset_decimal = hour(sunset) + case$shift + minute(sunset)/60 + second(sunset)/3600)
+  output <- mutate(output, sunset = sunset + hours(case$shift))
   output <- mutate(output, day_duration = sunset_decimal - sunrise_decimal)
   
   return(output)

@@ -28,6 +28,14 @@ ui <- fluidPage(
       # Show a plot of the generated distribution
       mainPanel(
          plotOutput('lightPlot'),
+         h6('Amanecer más temprano:'), 
+         textOutput('earlier_sunrise'),
+         h6('Anochecer más temprano:'),
+         textOutput('earlier_sunset'),
+         h6('Amanecer más tardío:'),
+         textOutput('later_sunrise'),
+         h6('Anochecer más tardío:'),
+         textOutput('later_sunset'),
          h4('Por Pablo Rodríguez (pabrod.github.io)')
       )
    )
@@ -69,14 +77,32 @@ server <- function(input, output) {
     return(times)
   })
   
-  extremes <- reactive({
+  output$earlier_sunrise <- reactive({
     times <- times()
-    extremes <- list()
     
-    extremes$earlier_sunrise <- filter(times, sunrise_decimal == min(sunrise_decimal))
-    extremes$earlier_sunset <- filter(times, sunset_decimal == min(sunset_decimal))
-    extremes$later_sunrise <- filter(times, sunrise_decimal == max(sunrise_decimal))
-    extremes$later_sunset <- filter(times, sunset_decimal == max(sunset_decimal))
+    date <- filter(times, sunrise_decimal == min(sunrise_decimal))
+    earlier_sunrise <- format(date$sunrise[1], format = '%d-%B %H:%M:%S')
+  })
+  
+  output$earlier_sunset <- reactive({
+    times <- times()
+    
+    date <- filter(times, sunset_decimal == min(sunset_decimal))
+    earlier_sunset <- format(date$sunset[1], format = '%d-%B %H:%M:%S')
+  })
+  
+  output$later_sunrise <- reactive({
+    times <- times()
+    
+    date <- filter(times, sunrise_decimal == max(sunrise_decimal))
+    later_sunrise <- format(date$sunrise[1], format = '%d-%B %H:%M:%S')
+  })
+  
+  output$later_sunset <- reactive({
+    times <- times()
+    
+    date <- filter(times, sunset_decimal == max(sunset_decimal))
+    later_sunset <- format(date$sunset[1], format = '%d-%B %H:%M:%S')
   })
   
   output$lightPlot <- renderPlot({
@@ -84,6 +110,7 @@ server <- function(input, output) {
     
     ## Plot info
     plot_result(times)
+    
   })
   
 }
