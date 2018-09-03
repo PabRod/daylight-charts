@@ -20,7 +20,6 @@ ui <- fluidPage(
    sidebarLayout(
       sidebarPanel(
         selectInput('localidad', 'Selecciona tu localidad', cities_db$name),
-        helpText('(Las islas Canarias están excluidas por motivos técnicos)'),
         helpText('Selecciona el tipo de horario'),
         radioButtons('horario', 'Tipo de horario:', c('Con cambio de hora', 'Sólo horario de invierno', 'Sólo horario de verano'))
       ),
@@ -59,20 +58,16 @@ server <- function(input, output) {
   
   times <- reactive({
     ## Set position
-    
     city <- city_selected()
-    
-    lat <- city$lat
-    lon <- city$lon
     
     ## Set conditions
     daylight_saving <- daylight_saving()
     summer_time <- summer_time()
     
-    case <- get_case(daylight_saving, summer_time)
+    case <- get_case(daylight_saving, summer_time, city)
     
     ## Clean results
-    times <- get_sunlight_times(lat, lon, case)
+    times <- get_sunlight_times(city$lat, city$lon, case)
     
     return(times)
   })

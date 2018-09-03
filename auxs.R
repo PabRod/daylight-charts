@@ -9,32 +9,58 @@ library(maps)
 # Functions
 get_spanish_towns <- function () {
   
-  cities_db <- filter(world.cities, country.etc == 'Spain', lat > 30) # Exclude Canary Islands
-  cities_db <- select(cities_db, name, lat, long)
+  # The peninsular, balearic and african cities are in the database
+  cities_pen <- filter(world.cities, country.etc == 'Spain', lat > 30) # Exclude Canary Islands
+  cities_pen <- select(cities_pen, name, lat, long)
   
-  return(cities_db)
+  # The cities in the Canary islands have to be hardcoded
+  names_can <- c('Santa Cruz de Tenerife', 'Las Palmas de Gran Canaria')
+  lat_can <- c(28.47, 28.13)
+  lon_can <- c(-16.25, -15.43)
+  cities_can <- data.frame(name = names_can, lat = lat_can, lon = lon_can)
+  names(cities_can) <- names(cities_pen)
+  
+  # Paste them together
+  cities <- rbind(cities_pen, cities_can)
+  cities <- arrange(cities, name)
+  
+  return(cities)
 }
 
 cities_db <- get_spanish_towns()
 
-get_case <- function (daylight_saving, summer_time) {
+get_case <- function (daylight_saving, summer_time, city) {
   case <- list()
   
-  if(daylight_saving) {
-    case$tz <- 'CET'
-    case$shift <- 0 # CET (GMT + 1 in winter, GMT + 2 in summer)
-  } else if(!summer_time) {
-    case$tz <- 'GMT'
-    case$shift <- 1 # GMT + 1 all year
-  } else if (summer_time) {
-    case$tz <- 'GMT'
-    case$shift <- 2 # GMT + 2 all year
+  if(city$lat > 30) { # Not Canary islands
+    if(daylight_saving) {
+      case$tz <- 'CET'
+      case$shift <- 0 # CET (GMT + 1 in winter, GMT + 2 in summer)
+    } else if(!summer_time) {
+      case$tz <- 'GMT'
+      case$shift <- 1 # GMT + 1 all year
+    } else if (summer_time) {
+      case$tz <- 'GMT'
+      case$shift <- 2 # GMT + 2 all year
+    } 
+  } else { # Canary islands
+    if(daylight_saving) {
+      case$tz <- 'WET'
+      case$shift <- 0 # WET (GMT in winter, GMT + 1 in summer)
+    } else if(!summer_time) {
+      case$tz <- 'GMT'
+      case$shift <- 0 # GMT all year
+    } else if (summer_time) {
+      case$tz <- 'GMT'
+      case$shift <- 1 # GMT + 1 all year
+    } 
   }
   
   return(case)
 }
 
 get_sunlight_times <- function(lat, lon, case) {
+  
   keep <- c('sunrise', 'sunset')
   
   initDate <- as.Date('2019-01-01')
