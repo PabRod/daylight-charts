@@ -10,24 +10,24 @@
 library(shiny)
 source('auxs.R')
 
-# Define UI for application that draws a histogram
+# Define UI
 ui <- fluidPage(
-   
+
    # Application title
    titlePanel('¿Cómo me afecta el cambio de hora?'),
-   
-   # Sidebar with a slider input for number of bins 
+
+   # Sidebar with a slider input for number of bins
    sidebarLayout(
       sidebarPanel(
         selectInput('localidad', 'Selecciona tu localidad', cities_db$name),
         helpText('Selecciona el tipo de horario'),
         radioButtons('horario', 'Tipo de horario:', c('Con cambio de hora', 'Sólo horario de invierno', 'Sólo horario de verano'))
       ),
-      
-      # Show a plot of the generated distribution
+
+      # Show output
       mainPanel(
          plotOutput('lightPlot'),
-         h6('Amanecer más temprano:'), 
+         h6('Amanecer más temprano:'),
          textOutput('earlier_sunrise'),
          h6('Anochecer más temprano:'),
          textOutput('earlier_sunset'),
@@ -40,76 +40,75 @@ ui <- fluidPage(
    )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic
 server <- function(input, output) {
-  
+
   # Parameters
   city_selected <- reactive({
     city_selected <- filter(cities_db, name %in% input$localidad)
   })
-  
+
   daylight_saving <- reactive({
     identical(input$horario, 'Con cambio de hora')
   })
-  
+
   summer_time <- reactive({
     identical(input$horario, 'Sólo horario de verano')
   })
-  
+
   times <- reactive({
     ## Set position
     city <- city_selected()
-    
+
     ## Set conditions
     daylight_saving <- daylight_saving()
     summer_time <- summer_time()
-    
+
     case <- get_case(daylight_saving, summer_time, city)
-    
-    ## Clean results
+
+    ## Get the sunrise and sunset times
     times <- get_sunlight_times(city$lat, city$lon, case)
-    
+
     return(times)
   })
-  
+
   output$earlier_sunrise <- reactive({
     times <- times()
-    
+
     date <- filter(times, sunrise_decimal == min(sunrise_decimal))
     earlier_sunrise <- format(date$sunrise[1], format = '%d-%B %H:%M:%S')
   })
-  
+
   output$earlier_sunset <- reactive({
     times <- times()
-    
+
     date <- filter(times, sunset_decimal == min(sunset_decimal))
     earlier_sunset <- format(date$sunset[1], format = '%d-%B %H:%M:%S')
   })
-  
+
   output$later_sunrise <- reactive({
     times <- times()
-    
+
     date <- filter(times, sunrise_decimal == max(sunrise_decimal))
     later_sunrise <- format(date$sunrise[1], format = '%d-%B %H:%M:%S')
   })
-  
+
   output$later_sunset <- reactive({
     times <- times()
-    
+
     date <- filter(times, sunset_decimal == max(sunset_decimal))
     later_sunset <- format(date$sunset[1], format = '%d-%B %H:%M:%S')
   })
-  
+
   output$lightPlot <- renderPlot({
     times <- times()
-    
+
     ## Plot info
     plot_result(times)
-    
+
   })
-  
+
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)
-
