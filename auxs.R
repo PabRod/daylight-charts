@@ -27,6 +27,15 @@ get_spanish_towns <- function () {
   return(cities)
 }
 
+get_dutch_towns <- function() {
+  
+  cities <- filter(world.cities, country.etc == 'Netherlands')
+  cities <- select(cities, name, lat, long)
+  cities <- arrange(cities, name)
+  
+  return(cities)
+}
+
 cities_db <- get_spanish_towns()
 
 get_case <- function (daylight_saving, summer_time, city) {
