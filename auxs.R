@@ -83,7 +83,7 @@ get_sunlight_times <- function(lat, lon, case) {
 plot_result <- function(data) {
   
   p <- ggplot(data = data, aes(ymin = 0, ymax = 24))
-  p <- p + geom_ribbon(aes(x = date, ymin = sunrise_decimal, ymax = sunset_decimal, fill = 'Horas de sol'))
+  p <- p + geom_ribbon(aes(x = date, ymin = sunrise_decimal, ymax = sunset_decimal, fill = 'Horas de sol'), fill = 'yellow', alpha = 0.5, color = 'yellow')
   p <- p + theme_dark()
   p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1))
   p <- p + scale_x_date(date_labels = "%d %b", date_breaks = '1 month')
