@@ -36,7 +36,7 @@ get_dutch_towns <- function() {
   return(cities)
 }
 
-cities_db <- get_spanish_towns()
+cities_db <- get_dutch_towns()
 
 get_case <- function (daylight_saving, summer_time, city) {
   case <- list()
@@ -79,7 +79,7 @@ get_sunlight_times <- function(lat, lon, case) {
   }
 
   output <- getSunlightTimes(date = dates, lat = lat, lon = lon, tz = case$tz, keep = keep)
-  output <- mutate(output, date = as_date(date))
+  output <- mutate(output, date = as_date(date, locale = 'nl_NL.UTF-8'))
   output <- mutate(output, sunrise_decimal = hour(sunrise) + case$shift + minute(sunrise)/60 + second(sunrise)/3600)
   output <- mutate(output, sunrise = sunrise + hours(case$shift))
   output <- mutate(output, sunset_decimal = hour(sunset) + case$shift + minute(sunset)/60 + second(sunset)/3600)
@@ -98,8 +98,8 @@ plot_result <- function(data) {
   p <- p + scale_x_date(date_labels = "%d %b", date_breaks = '1 month')
   p <- p + scale_y_continuous(breaks = seq(0, 24, 2))
   p <- p + coord_cartesian(ylim = c(0, 24))
-  p <- p + labs(title = 'Horas de sol', subtitle = paste('En',  get_current_year(), sep = ' '))
-  p <- p + xlab('Fecha') + ylab('Hora')
+  p <- p + labs(title = 'Zonuren', subtitle = paste('In de jaar',  get_current_year(), sep = ' '))
+  p <- p + xlab('Datum') + ylab('Uur')
   p <- p + guides(fill = FALSE)
 
   print(p)

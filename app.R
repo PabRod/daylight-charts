@@ -14,28 +14,30 @@ source('auxs.R')
 ui <- fluidPage(
 
    # Application title
-   titlePanel('¿Cómo me afecta el cambio de hora?'),
+   titlePanel('Hoe raakt u de winter en zomertijd wijziging?'),
 
    # Sidebar with a slider input for number of bins
    sidebarLayout(
       sidebarPanel(
-        selectInput('localidad', 'Selecciona tu localidad', cities_db$name),
-        helpText('Selecciona el tipo de horario'),
-        radioButtons('horario', 'Tipo de horario:', c('Con cambio de hora', 'Sólo horario de invierno', 'Sólo horario de verano'))
+        selectInput('localidad', 'Kies een stad of dorp', cities_db$name),
+        helpText('Kies de tijd'),
+        radioButtons('horario', 'Tijd:', 
+                     choiceValues = c('Con cambio de hora', 'Sólo horario de invierno', 'Sólo horario de verano') , 
+                     choiceNames = c('Wintertijd en zomertijd (huidige situatie)', 'Wintertijd het hele jaar', 'Zomertijd het hele jaar'))
       ),
 
       # Show output
       mainPanel(
          plotOutput('lightPlot'),
-         h6('Amanecer más temprano:'),
+         h6('Vroegste dageraad:'),
          textOutput('earlier_sunrise'),
-         h6('Anochecer más temprano:'),
+         h6('Vroegste avondschemering::'),
          textOutput('earlier_sunset'),
-         h6('Amanecer más tardío:'),
+         h6('Laatste dageraad:'),
          textOutput('later_sunrise'),
-         h6('Anochecer más tardío:'),
+         h6('Laatste avondschemering:'),
          textOutput('later_sunset'),
-         h4('Por Pablo Rodríguez (pabrod.github.io)')
+         h4('Pablo Rodríguez-Sánchez (pabrod.github.io)')
       )
    )
 )
