@@ -14,7 +14,7 @@ source('auxs.R')
 ui <- fluidPage(
 
    # Application title
-   titlePanel('Hoe raakt u de winter en zomertijd wijziging?'),
+   titlePanel('Wat is het effect van de klok verzetten op uw locatie?'),
 
    # Sidebar with a slider input for number of bins
    sidebarLayout(
@@ -23,7 +23,7 @@ ui <- fluidPage(
         helpText('Kies de tijd'),
         radioButtons('horario', 'Tijd:', 
                      choiceValues = c('Con cambio de hora', 'Sólo horario de invierno', 'Sólo horario de verano') , 
-                     choiceNames = c('Wintertijd en zomertijd (huidige situatie)', 'Wintertijd het hele jaar', 'Zomertijd het hele jaar'))
+                     choiceNames = c('Met klok verzetten (huidige situatie)', 'Zonder klok verzetten (wintertijd het hele jaar)', 'Zonder klok verzetten (zomertijd het hele jaar)'))
       ),
 
       # Show output
