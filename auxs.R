@@ -36,7 +36,17 @@ get_dutch_towns <- function() {
   return(cities)
 }
 
+get_belgian_towns <- function() {
+  
+  cities <- filter(world.cities, country.etc == 'Belgium')
+  cities <- select(cities, name, lat, long)
+  cities <- arrange(cities, name)
+  
+  return(cities)
+}
+
 cities_db <- get_dutch_towns()
+cities_db <- rbind(cities_db, get_belgian_towns())
 
 get_case <- function (daylight_saving, summer_time, city) {
   case <- list()
