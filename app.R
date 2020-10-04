@@ -19,10 +19,10 @@ ui <- fluidPage(
    # Sidebar with a slider input for number of bins
    sidebarLayout(
       sidebarPanel(
-        selectInput('localidad', 'Kies een stad of dorp', cities_db$name),
+        selectInput('town_name', 'Kies een stad of dorp', cities_db$name),
         helpText('Kies de tijd'),
-        radioButtons('horario', 'Tijd:', 
-                     choiceValues = c('Con cambio de hora', 'Sólo horario de invierno', 'Sólo horario de verano') , 
+        radioButtons('time_scheme', 'Tijd:', 
+                     choiceValues = c('Daylight saving time in summer', 'Winter time all year', 'Summer time all year') , 
                      choiceNames = c('Met klok verzetten (huidige situatie)', 'Zonder klok verzetten (wintertijd het hele jaar)', 'Zonder klok verzetten (zomertijd het hele jaar)'))
       ),
 
@@ -47,15 +47,15 @@ server <- function(input, output) {
 
   # Parameters
   city_selected <- reactive({
-    city_selected <- filter(cities_db, name %in% input$localidad)
+    city_selected <- filter(cities_db, name %in% input$town_name)
   })
 
   daylight_saving <- reactive({
-    identical(input$horario, 'Con cambio de hora')
+    identical(input$time_scheme, 'Daylight saving time in summer')
   })
 
   summer_time <- reactive({
-    identical(input$horario, 'Sólo horario de verano')
+    identical(input$time_scheme, 'Summer time all year')
   })
 
   times <- reactive({
