@@ -31,7 +31,7 @@ get_spanish_towns <- function () {
 get_towns <- function(countrylist) {
   
   cities <- filter(world.cities, country.etc %in% countrylist)
-  cities <- select(cities, name, lat, long)
+  cities <- select(cities, name, lat, long, country.etc)
   cities <- arrange(cities, name)
   
   return(cities)
