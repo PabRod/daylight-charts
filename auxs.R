@@ -7,27 +7,6 @@ library(dplyr)
 library(maps)
 
 # Functions
-get_spanish_towns <- function () {
-
-  # The peninsular, balearic and african cities are in the database
-  cities_pen <- filter(world.cities, country.etc == 'Spain', lat > 30) # Exclude Canary Islands
-  cities_pen <- select(cities_pen, name, lat, long)
-
-  # The cities in the Canary islands have to be hardcoded
-  names_can <- c('Santa Cruz de Tenerife', 'Las Palmas de Gran Canaria')
-  lat_can <- c(28.47, 28.13)
-  lon_can <- c(-16.25, -15.43)
-  cities_can <- data.frame(name = names_can, lat = lat_can, lon = lon_can)
-  names(cities_can) <- names(cities_pen)
-
-  # Paste them together
-  cities <- rbind(cities_pen, cities_can)
-  cities <- arrange(cities, name)
-
-  return(cities)
-}
-
-
 get_towns <- function(countrylist) {
   
   cities <- filter(world.cities, country.etc %in% countrylist)
@@ -38,12 +17,12 @@ get_towns <- function(countrylist) {
   
 }
 
-cities_db <- get_towns(c("Netherlands", "Belgium"))
+cities_db <- get_towns(c("Spain", "Canary Islands", "Netherlands", "Belgium"))
 
 get_case <- function (daylight_saving, summer_time, city) {
   case <- list()
 
-  if(city$lat > 30) { # Not Canary islands
+  if(city$country.etc != "Canary Islands") { # Canary islands are in a different time zone
     if(daylight_saving) {
       case$tz <- 'CET'
       case$shift <- 0 # CET (GMT + 1 in winter, GMT + 2 in summer)
