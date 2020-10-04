@@ -78,7 +78,7 @@ plot_result <- function(data) {
   p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1))
   p <- p + scale_x_date(date_labels = "%d %b", date_breaks = '1 month')
   p <- p + scale_y_continuous(breaks = seq(0, 24, 2))
-  p <- p + coord_cartesian(ylim = c(0, 24))
+  p <- p + coord_cartesian(ylim = c(0, 24), expand = FALSE)
   p <- p + labs(title = 'Zonuren', subtitle = paste('In de jaar',  get_current_year(), sep = ' '))
   p <- p + xlab('Datum') + ylab('Uur')
   p <- p + guides(fill = FALSE)
