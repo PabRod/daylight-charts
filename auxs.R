@@ -5,8 +5,23 @@ library(ggplot2)
 library(scales)
 library(dplyr)
 library(maps)
+library(readr)
+
+# Config
+language <- "ES" # Used for translating the output text
+regions <- c("Spain", "Canary Islands", "Netherlands", "Belgium") # Used for subsetting the list of towns
 
 # Functions
+
+# Auxiliary function that reads the csv file containing information in different languages
+get_text <- function(language, file = "text.csv") {
+  text <- read_csv(file)
+  text <- filter(text, Language == language)
+  
+  return(text)
+}
+
+# Returns an ordered list of towns in the given list of countries
 get_towns <- function(countrylist) {
   
   cities <- filter(world.cities, country.etc %in% countrylist)
@@ -16,8 +31,6 @@ get_towns <- function(countrylist) {
   return(cities)
   
 }
-
-cities_db <- get_towns(c("Spain", "Canary Islands", "Netherlands", "Belgium"))
 
 get_case <- function (daylight_saving, summer_time, city) {
   case <- list()
@@ -79,8 +92,8 @@ plot_result <- function(data) {
   p <- p + scale_x_date(date_labels = "%d %b", date_breaks = '1 month')
   p <- p + scale_y_continuous(breaks = seq(0, 24, 2))
   p <- p + coord_cartesian(ylim = c(0, 24), expand = FALSE)
-  p <- p + labs(title = 'Zonuren', subtitle = paste('In de jaar',  get_current_year(), sep = ' '))
-  p <- p + xlab('Datum') + ylab('Uur')
+  p <- p + labs(title = text$SunlightHours, subtitle = paste(text$DisplayYear, get_current_year(), sep = ' '))
+  p <- p + xlab(text$Date) + ylab(text$Hour)
   p <- p + guides(fill = FALSE)
 
   print(p)

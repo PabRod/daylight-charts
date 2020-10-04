@@ -9,33 +9,35 @@
 
 library(shiny)
 source('auxs.R')
+cities_db <- get_towns(regions)
+text <- get_text(language)
 
 # Define UI
 ui <- fluidPage(
 
    # Application title
-   titlePanel('Wat is het effect van de klok verzetten op uw locatie?'),
+   titlePanel(text$Title),
 
    # Sidebar with a slider input for number of bins
    sidebarLayout(
       sidebarPanel(
-        selectInput('town_name', 'Kies een stad of dorp', cities_db$name),
-        helpText('Kies de tijd'),
-        radioButtons('time_scheme', 'Tijd:', 
+        selectInput('town_name', text$ChooseCity, cities_db$name),
+        helpText(text$ChooseTime),
+        radioButtons('time_scheme', text$DisplayTime, 
                      choiceValues = c('Daylight saving time in summer', 'Winter time all year', 'Summer time all year') , 
-                     choiceNames = c('Met klok verzetten (huidige situatie)', 'Zonder klok verzetten (wintertijd het hele jaar)', 'Zonder klok verzetten (zomertijd het hele jaar)'))
+                     choiceNames = c(text$WithDST, text$WithWinter, text$WithSummer))
       ),
 
       # Show output
       mainPanel(
          plotOutput('lightPlot'),
-         h6('Vroegste dageraad:'),
+         h6(text$EarlierSunrise),
          textOutput('earlier_sunrise'),
-         h6('Vroegste avondschemering::'),
+         h6(text$EarlierSunset),
          textOutput('earlier_sunset'),
-         h6('Laatste dageraad:'),
+         h6(text$LatestSunrise),
          textOutput('later_sunrise'),
-         h6('Laatste avondschemering:'),
+         h6(text$LatestSunset),
          textOutput('later_sunset'),
          h4('Pablo Rodríguez-Sánchez (pabrod.github.io)')
       )
