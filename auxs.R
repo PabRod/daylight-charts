@@ -110,12 +110,12 @@ regions_generator <- function(save = FALSE) {
                "Poland", "Portugal", "Romania", "Slovakia", "Slovenia", 
                "Spain", "Sweden", "Canary Islands") #, "UK", "Norway", "Switzerland")
   
-  timezone <- c(1, 1, 2, 1, 2, 
-                1, 1, 2, 2, 1,
-                1, 2, 1, 0, 1,
-                2, 2, 1, 1, 1,
-                1, 0, 2, 1, 1,
-                1, 1, 0) # Time zone GMT + 0 / 1 / 2
+  timezone <- c("CET", "CET", "EET", "CET", "EET", 
+                "CET", "CET", "EET", "EET", "CET",
+                "CET", "EET", "CET", "WET", "CET",
+                "EET", "EET", "CET", "CET", "CET",
+                "CET", "WET", "EET", "CET", "CET",
+                "CET", "CET", "WET")
   
   eu_regions <- data.frame(regions, timezone)
   
