@@ -18,9 +18,9 @@ get_text <- function(language = "EN", file = "text.csv") {
 }
 
 # Returns an ordered list of towns in the given list of countries
-get_towns <- function(countrylist) {
+get_towns <- function(countrylist, pop_threshold = 0) {
   
-  cities <- filter(world.cities, country.etc %in% countrylist)
+  cities <- filter(world.cities, country.etc %in% countrylist & pop > pop_threshold)
   cities <- select(cities, name, lat, long, country.etc)
   cities <- arrange(cities, name)
   
