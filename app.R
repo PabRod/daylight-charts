@@ -11,11 +11,12 @@ library(shiny)
 
 # Config
 language <- "EN" # Used for translating the output text
-regions <- c("Spain", "Canary Islands") # Used for subsetting the list of towns
+regions <- regions_generator()$regions
+population_threshold <- 500000
 
 # Create the dataset
 source('auxs.R') # We store the functions here to avoid clutter
-cities_db <- get_towns(regions, pop_threshold = 0)
+cities_db <- get_towns(regions, pop_threshold = population_threshold)
 text <- get_text(language) # Translate the site to the available languages
 
 # Define UI

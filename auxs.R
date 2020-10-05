@@ -8,7 +8,6 @@ library(maps)
 library(readr)
 
 # Functions
-
 # Auxiliary function that reads the csv file containing information in different languages
 get_text <- function(language = "EN", file = "text.csv") {
   text <- read_csv(file)
@@ -100,4 +99,27 @@ get_current_year <- function() {
   year <- format(Sys.Date(), "%Y")
   return(year)
   
+}
+
+# Information about european countries and its timezone
+regions_generator <- function(save = FALSE) {
+  regions <- c("Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus",
+               "Czech Republic", "Denmark", "Estonia", "Finland", "France",
+               "Germany", "Greece", "Hungary", "Ireland", "Italy", 
+               "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands",
+               "Poland", "Portugal", "Romania", "Slovakia", "Slovenia", 
+               "Spain", "Sweden", "Canary Islands") #, "UK", "Norway", "Switzerland")
+  
+  timezone <- c(1, 1, 2, 1, 2, 
+                1, 1, 2, 2, 1,
+                1, 2, 1, 0, 1,
+                2, 2, 1, 1, 1,
+                1, 0, 2, 1, 1,
+                1, 1, 0) # Time zone GMT + 0 / 1 / 2
+  
+  eu_regions <- data.frame(regions, timezone)
+  
+  if(save) write.csv(eu_regions, file = "eu_regions.csv")
+  
+  return(eu_regions)
 }
