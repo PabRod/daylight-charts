@@ -7,14 +7,10 @@ library(dplyr)
 library(maps)
 library(readr)
 
-# Config
-language <- "EN" # Used for translating the output text
-regions <- c("Spain", "Canary Islands") # Used for subsetting the list of towns
-
 # Functions
 
 # Auxiliary function that reads the csv file containing information in different languages
-get_text <- function(language, file = "text.csv") {
+get_text <- function(language = "EN", file = "text.csv") {
   text <- read_csv(file)
   text <- filter(text, Language == language)
   

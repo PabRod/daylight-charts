@@ -8,9 +8,15 @@
 #
 
 library(shiny)
-source('auxs.R')
+
+# Config
+language <- "EN" # Used for translating the output text
+regions <- c("Spain", "Canary Islands") # Used for subsetting the list of towns
+
+# Create the dataset
+source('auxs.R') # We store the functions here to avoid clutter
 cities_db <- get_towns(regions)
-text <- get_text(language)
+text <- get_text(language) # Translate the site to the available languages
 
 # Define UI
 ui <- fluidPage(
