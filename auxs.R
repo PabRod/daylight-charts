@@ -6,6 +6,7 @@ library(scales)
 library(dplyr)
 library(maps)
 library(readr)
+library(lutz)
 
 # Functions
 # Auxiliary function that reads the csv file containing information in different languages
@@ -25,6 +26,11 @@ get_towns <- function(countrylist, pop_threshold = 0) {
   
   return(cities)
   
+}
+
+# Use location to infer the timezone
+get_timezones <- function(cities) {
+  timezones <- tz_lookup_coords(lat = cities$lat, lon = cities$lon, method = "fast", warn = FALSE)
 }
 
 get_case <- function (daylight_saving, summer_time, city) {
