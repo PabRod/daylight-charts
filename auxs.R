@@ -8,8 +8,8 @@ library(maps)
 library(readr)
 
 # Config
-language <- "ES" # Used for translating the output text
-regions <- c("Spain", "Canary Islands", "Netherlands", "Belgium") # Used for subsetting the list of towns
+language <- "NL" # Used for translating the output text
+regions <- c("Netherlands", "Belgium") # Used for subsetting the list of towns
 
 # Functions
 
