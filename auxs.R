@@ -8,8 +8,8 @@ library(maps)
 library(readr)
 
 # Config
-language <- "NL" # Used for translating the output text
-regions <- c("Netherlands", "Belgium") # Used for subsetting the list of towns
+language <- "ES" # Used for translating the output text
+regions <- c("Spain", "Canary Islands") # Used for subsetting the list of towns
 
 # Functions
 
@@ -83,7 +83,7 @@ get_sunlight_times <- function(lat, lon, case) {
   return(output)
 }
 
-plot_result <- function(data) {
+plot_result <- function(data, text) {
   
   p <- ggplot(data = data, aes(ymin = 0, ymax = 24))
   p <- p + geom_ribbon(aes(x = date, ymin = sunrise_decimal, ymax = sunset_decimal), fill = 'yellow', alpha = 0.5, color = 'yellow')

@@ -108,7 +108,7 @@ server <- function(input, output) {
     times <- times()
 
     ## Plot info
-    plot_result(times)
+    plot_result(times, text)
 
   })
 
