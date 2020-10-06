@@ -1,5 +1,5 @@
-# Daylight distribution in Spain
-Interactive applet showing the daylight distribution in different spanish locations. Available in [Shinyapps][app]
+# Daylight distribution in the European Union <img src="https://ec.europa.eu/transport/sites/transport/files/st/st_2.png" width="140" align="right" />
+Interactive applet showing the daylight distribution in every UE city with a population of 100000 r larger. Interactive applet available in [Shinyapps](https://pabrod.shinyapps.io/cambio-de-hora/).
 
 [![time](figs/time.png)][app]
 
