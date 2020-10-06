@@ -36,7 +36,7 @@ get_timezones <- function(cities) {
 }
 
 # Get the offset from UTC in hours
-get_utc_offset <- function(timezones, winter = TRUE) {
+get_utc_offset <- function(timezone, winter = TRUE) {
   # A reference date is required due to possible daylight saving time
   year <- get_current_year()
   
@@ -46,10 +46,8 @@ get_utc_offset <- function(timezones, winter = TRUE) {
     date <- paste(get_current_year(), "06-01", sep = "-") # Use June as reference
   }
   
-  offset <- sapply(timezones, function(timezone) tz_offset(date, timezone))
-  offset <- as.data.frame(t(offset))
+  offset <- tz_offset(date, timezone)
   offset <- select(offset, zone, utc_offset_h) # Keep only the interesting information
-  unname(offset)
   
   return(offset)
 }
@@ -80,8 +78,8 @@ get_case <- function (daylight_saving, summer_time, city) {
       case$shift <- 1 # GMT + 1 all year
     }
   }
-
-  return(case)
+    
+    return(case)
 }
 
 get_sunlight_times <- function(lat, lon, case) {
