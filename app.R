@@ -18,7 +18,8 @@ population_threshold <- 500000
 source('auxs.R') # We store the functions here to avoid clutter
 cities_db <- get_towns(regions, pop_threshold = population_threshold)
 timezones <- get_timezones(cities_db)
-cities_db <- cbind(cities_db, timezones)
+offsets <- get_utc_offset(timezones)
+cities_db <- cbind(cities_db, timezones, offsets)
 text <- get_text(language) # Translate the site to the available languages
 
 # Define UI

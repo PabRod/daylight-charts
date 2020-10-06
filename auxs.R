@@ -31,6 +31,27 @@ get_towns <- function(countrylist, pop_threshold = 0) {
 # Use location to infer the timezone
 get_timezones <- function(cities) {
   timezones <- tz_lookup_coords(lat = cities$lat, lon = cities$lon, method = "fast", warn = FALSE)
+  
+  return(timezones)
+}
+
+# Get the offset from UTC in hours
+get_utc_offset <- function(timezones, winter = TRUE) {
+  # A reference date is required due to possible daylight saving time
+  year <- get_current_year()
+  
+  if(winter) { 
+    date <- paste(get_current_year(), "01-01", sep = "-") # Use January as reference
+  } else {
+    date <- paste(get_current_year(), "06-01", sep = "-") # Use June as reference
+  }
+  
+  offset <- sapply(timezones, function(timezone) tz_offset(date, timezone))
+  offset <- as.data.frame(t(offset))
+  offset <- select(offset, zone, utc_offset_h) # Keep only the interesting information
+  unname(offset)
+  
+  return(offset)
 }
 
 get_case <- function (daylight_saving, summer_time, city) {
