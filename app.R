@@ -8,12 +8,13 @@
 #
 
 library(shiny)
+library(shinythemes)
 source('auxs.R') # We store the functions here to avoid clutter
 
 # Config
 language <- "EN" # Used for translating the output text
 regions <- regions_generator()$regions
-population_threshold <- 500000
+population_threshold <- 1e5
 
 # Create the dataset
 cities_db <- get_towns(regions, pop_threshold = population_threshold)
@@ -24,7 +25,9 @@ text <- get_text(language) # Translate the site to the available languages
 
 # Define UI
 ui <- fluidPage(
-
+  
+   theme = shinytheme("cerulean"), 
+                
    # Application title
    titlePanel(text$Title),
 
