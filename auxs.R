@@ -53,33 +53,21 @@ get_utc_offset <- function(timezone, winter = TRUE) {
 }
 
 get_case <- function (daylight_saving, summer_time, city) {
-  case <- list()
-
-  if(city$country.etc != "Canary Islands") { # Canary islands are in a different time zone
-    if(daylight_saving) {
-      case$tz <- 'CET'
-      case$shift <- 0 # CET (GMT + 1 in winter, GMT + 2 in summer)
-    } else if(!summer_time) {
-      case$tz <- 'GMT'
-      case$shift <- 1 # GMT + 1 all year
-    } else if (summer_time) {
-      case$tz <- 'GMT'
-      case$shift <- 2 # GMT + 2 all year
-    }
-  } else { # Canary islands
-    if(daylight_saving) {
-      case$tz <- 'WET'
-      case$shift <- 0 # WET (GMT in winter, GMT + 1 in summer)
-    } else if(!summer_time) {
-      case$tz <- 'GMT'
-      case$shift <- 0 # GMT all year
-    } else if (summer_time) {
-      case$tz <- 'GMT'
-      case$shift <- 1 # GMT + 1 all year
-    }
-  }
+  
+  if(daylight_saving) { # If daylight saving policy applies just return the ...
+    
+    case <- list(tz = city$zone, shift = 0) # ... official timezone (WE(S)T, CE(S)T, ...)
     
     return(case)
+    
+  } else { # If daylight policy doesn't apply, just return a fixed summer/winter time
+    
+    if(summer_time) case <- list(tz = "UTC", shift = city$utc_offset_h + 1)
+    else case <- list(tz = "UTC", shift = city$utc_offset_h)
+    
+    return(case)
+  }
+  
 }
 
 get_sunlight_times <- function(lat, lon, case) {

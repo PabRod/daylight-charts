@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+source('auxs.R') # We store the functions here to avoid clutter
 
 # Config
 language <- "EN" # Used for translating the output text
@@ -15,7 +16,6 @@ regions <- regions_generator()$regions
 population_threshold <- 500000
 
 # Create the dataset
-source('auxs.R') # We store the functions here to avoid clutter
 cities_db <- get_towns(regions, pop_threshold = population_threshold)
 timezones <- get_timezones(cities_db)
 offsets <- do.call(rbind, lapply(timezones, get_utc_offset))
