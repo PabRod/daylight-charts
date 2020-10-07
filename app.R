@@ -119,9 +119,17 @@ server <- function(input, output) {
 
   output$lightPlot <- renderPlot({
     times <- times()
+    ## Set position
+    city <- city_selected()
+    
+    ## Set conditions
+    daylight_saving <- daylight_saving()
+    summer_time <- summer_time()
+    
+    case <- get_case(daylight_saving, summer_time, city)
 
     ## Plot info
-    plot_result(times, text)
+    plot_result(times, text, case)
 
   })
 

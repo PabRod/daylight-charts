@@ -70,6 +70,12 @@ get_case <- function (daylight_saving, summer_time, city) {
   
 }
 
+# Return the case as a human readable string, such as GMT + 1 or CET
+get_case_string <- function(case) {
+  if (case$tz != "UTC") return(case$tz) # Such as CET
+  else return(paste("UTC", as.character(case$shift), sep = " + ")) # Such as UTC + 1
+}
+
 get_sunlight_times <- function(lat, lon, case) {
 
   keep <- c('sunrise', 'sunset')
@@ -81,7 +87,7 @@ get_sunlight_times <- function(lat, lon, case) {
   }
 
   output <- getSunlightTimes(date = dates, lat = lat, lon = lon, tz = case$tz, keep = keep)
-  output <- mutate(output, date = as_date(date, locale = 'nl_NL.UTF-8'))
+  output <- mutate(output, date = as_date(date))
   output <- mutate(output, sunrise_decimal = hour(sunrise) + case$shift + minute(sunrise)/60 + second(sunrise)/3600)
   output <- mutate(output, sunrise = sunrise + hours(case$shift))
   output <- mutate(output, sunset_decimal = hour(sunset) + case$shift + minute(sunset)/60 + second(sunset)/3600)
@@ -91,7 +97,7 @@ get_sunlight_times <- function(lat, lon, case) {
   return(output)
 }
 
-plot_result <- function(data, text) {
+plot_result <- function(data, text, case) {
   
   p <- ggplot(data = data, aes(ymin = 0, ymax = 24))
   p <- p + geom_ribbon(aes(x = date, ymin = sunrise_decimal, ymax = sunset_decimal), fill = 'yellow', alpha = 0.5, color = 'yellow')
@@ -101,7 +107,7 @@ plot_result <- function(data, text) {
   p <- p + scale_y_continuous(breaks = seq(0, 24, 2))
   p <- p + coord_cartesian(ylim = c(0, 24), expand = FALSE)
   p <- p + labs(title = text$SunlightHours, subtitle = paste(text$DisplayYear, get_current_year(), sep = ' '))
-  p <- p + xlab(text$Date) + ylab(text$Hour)
+  p <- p + xlab(text$Date) + ylab(paste(text$Hour, get_case_string(case), sep = " "))
   p <- p + guides(fill = FALSE)
 
   print(p)
