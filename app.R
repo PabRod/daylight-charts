@@ -13,7 +13,7 @@ source('auxs.R') # We store the functions here to avoid clutter
 
 # Config
 language <- "EN" # Used for translating the output text
-regions <- regions_generator()$regions
+regions <- regions_generator()
 population_threshold <- 1e5
 
 # Create the dataset

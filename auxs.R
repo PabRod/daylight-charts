@@ -127,18 +127,9 @@ regions_generator <- function(save = FALSE) {
                "Germany", "Greece", "Hungary", "Ireland", "Italy", 
                "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands",
                "Poland", "Portugal", "Romania", "Slovakia", "Slovenia", 
-               "Spain", "Sweden", "Canary Islands") #, "UK", "Norway", "Switzerland")
+               "Spain", "Sweden", "Canary Islands") # "UK", "Norway", "Switzerland")
   
-  timezone <- c("CET", "CET", "EET", "CET", "EET", 
-                "CET", "CET", "EET", "EET", "CET",
-                "CET", "EET", "CET", "WET", "CET",
-                "EET", "EET", "CET", "CET", "CET",
-                "CET", "WET", "EET", "CET", "CET",
-                "CET", "CET", "WET")
+  if(save) write.csv(regions, file = "eu_regions.csv")
   
-  eu_regions <- data.frame(regions, timezone)
-  
-  if(save) write.csv(eu_regions, file = "eu_regions.csv")
-  
-  return(eu_regions)
+  return(regions)
 }
