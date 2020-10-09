@@ -51,7 +51,8 @@ ui <- fluidPage(
          textOutput('later_sunrise'),
          h6(text$LatestSunset),
          textOutput('later_sunset'),
-         h4('Pablo Rodríguez-Sánchez (pabrod.github.io)')
+         h4('Pablo Rodríguez-Sánchez'),
+         tags$a(href="https://pabrod.github.io", "pabrod.github.io")
       )
    )
 )
