@@ -11,10 +11,24 @@ library(lutz)
 # Functions
 # Auxiliary function that reads the csv file containing information in different languages
 get_text <- function(language = "EN", file = "text.csv") {
+  
   text <- read_csv(file)
-  text <- filter(text, Language == language)
+  
+  if (language %in% get_available_languages(file)) { # Apply language only if it is supported
+    text <- filter(text, Language == language)
+  } else { # If an unsupported language is requested, show a warning an switch to English
+    text <- filter(text, language == "EN")
+    warning(paste("Available languages are:", get_available_languages(file, as.vector = FALSE), ". Setting language to EN."))
+  }
   
   return(text)
+}
+
+get_available_languages <- function(file = "text.csv", as.vector = TRUE) {
+  text <- read_csv(file)
+  
+  if(as.vector) return(text$Language)
+  else return( paste(text$Language, collapse = ", ") ) # Useful for printing a human-readable string
 }
 
 # Returns an ordered list of towns in the given list of countries

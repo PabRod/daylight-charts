@@ -12,7 +12,6 @@ library(shinythemes)
 source('auxs.R') # We store the functions here to avoid clutter
 
 # Config
-language <- "EN" # Used for translating the output text
 regions <- regions_generator()
 population_threshold <- 1e5
 
@@ -21,7 +20,7 @@ cities_db <- get_towns(regions, pop_threshold = population_threshold)
 timezones <- get_timezones(cities_db)
 offsets <- do.call(rbind, lapply(timezones, get_utc_offset))
 cities_db <- cbind(cities_db, timezones, offsets)
-text <- get_text(language) # Translate the site to the available languages
+text <- get_text() # Translate the site to the available languages (default = EN)
 
 # Define UI
 ui <- fluidPage(
