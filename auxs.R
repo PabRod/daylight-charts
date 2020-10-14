@@ -111,6 +111,19 @@ get_sunlight_times <- function(lat, lon, case) {
   return(output)
 }
 
+times_all <- function(city) {
+
+  cases <- list(standard = get_case(TRUE, FALSE, city),
+                always_summer = get_case(FALSE, TRUE, city),
+                always_winter = get_case(FALSE, FALSE, city))
+  
+  ## Get the sunrise and sunset times
+  times_list <- lapply(cases, function(case) get_sunlight_times(city$lat, city$lon, case))
+  times_df <- ldply(times_list)
+  
+  return(times_df)
+}
+
 plot_result <- function(data, text, case) {
   
   p <- ggplot(data = data, aes(ymin = 0, ymax = 24))
@@ -125,6 +138,55 @@ plot_result <- function(data, text, case) {
   p <- p + guides(fill = FALSE)
 
   print(p)
+}
+
+
+plot_static_city <- function(city_name, regions = regions_generator(), population_threshold = 1e5, save_path = "", language = "EN") {
+
+  # Create the dataset
+  cities_db <- get_towns(regions, pop_threshold = population_threshold)
+  timezones <- get_timezones(cities_db)
+  offsets <- do.call(rbind, lapply(timezones, get_utc_offset))
+  cities_db <- cbind(cities_db, timezones, offsets)
+  text <- get_text(language) # Translate the site to the available languages (default = EN)
+  
+  city <- filter(cities_db, name == city_name)
+  times <- times_all(city)
+  
+  p <- plot_static(times, text, city_name)
+  
+  if(save_path != "") { 
+    filename <- paste(save_path, city_name, ".png", sep = "")
+    p + ggsave(filename, width = 4, height = 3)
+  } else print(p)
+  
+}
+
+plot_static <- function(data, text, city_name) {
+  p <- ggplot(data = data, aes(ymin = 0, ymax = 24))
+  p <- p + geom_ribbon(data = subset(data, .id == "standard"), 
+                       aes(x = date, ymin = sunrise_decimal, ymax = sunset_decimal), 
+                       fill = 'yellow', alpha = 0.5, color = NA)
+  p <- p + geom_line(data = subset(data, .id == "always_winter"), 
+                     aes(x = date, y = sunrise_decimal),
+                     color = "blue")
+  p <- p + geom_line(data = subset(data, .id == "always_winter"), 
+                     aes(x = date, y = sunset_decimal),
+                     color = "blue", alpha = 0.5)
+  p <- p + geom_line(data = subset(data, .id == "always_summer"), 
+                     aes(x = date, y = sunset_decimal),
+                     color = "red")
+  p <- p + geom_line(data = subset(data, .id == "always_summer"), 
+                     aes(x = date, y = sunrise_decimal),
+                     color = "red", alpha = 0.5)
+  p <- p + theme_dark()
+  p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  p <- p + scale_x_date(date_labels = "%d %b", date_breaks = '1 month')
+  p <- p + scale_y_continuous(breaks = seq(0, 24, 2))
+  p <- p + coord_cartesian(ylim = c(0, 24), expand = FALSE)
+  p <- p + labs(title = paste(text$SunlightHours, "en", city_name, sep = " "), subtitle = paste(text$DisplayYear, get_current_year(), sep = ' '))
+  p <- p + xlab(text$Date) + ylab(text$Hour)
+  p <- p + guides(fill = FALSE)
 }
 
 get_current_year <- function() {
