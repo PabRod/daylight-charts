@@ -157,7 +157,7 @@ plot_static_city <- function(city_name, regions = regions_generator(), populatio
   
   if(save_path != "") { 
     filename <- paste(save_path, city_name, ".png", sep = "")
-    p + ggsave(filename)
+    p + ggsave(filename, width = 4, height = 3)
   } else print(p)
   
 }
