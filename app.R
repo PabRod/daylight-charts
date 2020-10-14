@@ -88,21 +88,6 @@ server <- function(input, output) {
 
     return(times)
   })
-  
-  times_all <- reactive({
-    ## Set position
-    city <- city_selected()
-    
-    cases <- list(standard = get_case(TRUE, FALSE, city),
-                  always_summer = get_case(FALSE, TRUE, city),
-                  always_winter = get_case(FALSE, FALSE, city))
-    
-    ## Get the sunrise and sunset times
-    times_list <- lapply(cases, function(case) get_sunlight_times(city$lat, city$lon, case))
-    times_df <- ldply(times_list)
-    
-    return(times_df)
-  })
 
   output$earlier_sunrise <- reactive({
     times <- times()

@@ -112,6 +112,19 @@ get_sunlight_times <- function(lat, lon, case) {
   return(output)
 }
 
+times_all <- function(city) {
+
+  cases <- list(standard = get_case(TRUE, FALSE, city),
+                always_summer = get_case(FALSE, TRUE, city),
+                always_winter = get_case(FALSE, FALSE, city))
+  
+  ## Get the sunrise and sunset times
+  times_list <- lapply(cases, function(case) get_sunlight_times(city$lat, city$lon, case))
+  times_df <- ldply(times_list)
+  
+  return(times_df)
+}
+
 plot_result <- function(data, text, case) {
   
   p <- ggplot(data = data, aes(ymin = 0, ymax = 24))
@@ -128,7 +141,7 @@ plot_result <- function(data, text, case) {
   print(p)
 }
 
-plot_static <- function(data, text, case) {
+plot_static <- function(data, text) {
   p <- ggplot(data = data, aes(ymin = 0, ymax = 24))
   p <- p + geom_ribbon(data = subset(data, .id == "standard"), 
                        aes(x = date, ymin = sunrise_decimal, ymax = sunset_decimal), fill = 'yellow', alpha = 0.5, color = 'yellow')
@@ -144,7 +157,7 @@ plot_static <- function(data, text, case) {
   p <- p + scale_y_continuous(breaks = seq(0, 24, 2))
   p <- p + coord_cartesian(ylim = c(0, 24), expand = FALSE)
   p <- p + labs(title = text$SunlightHours, subtitle = paste(text$DisplayYear, get_current_year(), sep = ' '))
-  p <- p + xlab(text$Date) + ylab(paste(text$Hour, get_case_string(case), sep = " "))
+  p <- p + xlab(text$Date) + ylab(text$Hour)
   p <- p + guides(fill = FALSE)
   
   print(p)
