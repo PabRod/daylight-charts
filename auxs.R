@@ -141,6 +141,21 @@ plot_result <- function(data, text, case) {
   print(p)
 }
 
+plot_static_city <- function(city_name, regions = regions_generator(), population_threshold = 1e5) {
+
+  # Create the dataset
+  cities_db <- get_towns(regions, pop_threshold = population_threshold)
+  timezones <- get_timezones(cities_db)
+  offsets <- do.call(rbind, lapply(timezones, get_utc_offset))
+  cities_db <- cbind(cities_db, timezones, offsets)
+  text <- get_text("ES") # Translate the site to the available languages (default = EN)
+  
+  city <- filter(cities_db, name == city_name)
+  times <- times_all(city)
+  
+  plot_static(times, text)
+}
+
 plot_static <- function(data, text) {
   p <- ggplot(data = data, aes(ymin = 0, ymax = 24))
   p <- p + geom_ribbon(data = subset(data, .id == "standard"), 
@@ -148,9 +163,15 @@ plot_static <- function(data, text) {
   p <- p + geom_line(data = subset(data, .id == "always_winter"), 
                      aes(x = date, y = sunrise_decimal),
                      color = "blue")
+  p <- p + geom_line(data = subset(data, .id == "always_winter"), 
+                     aes(x = date, y = sunset_decimal),
+                     color = "blue", alpha = 0.5)
   p <- p + geom_line(data = subset(data, .id == "always_summer"), 
                      aes(x = date, y = sunset_decimal),
                      color = "red")
+  p <- p + geom_line(data = subset(data, .id == "always_summer"), 
+                     aes(x = date, y = sunrise_decimal),
+                     color = "red", alpha = 0.5)
   p <- p + theme_dark()
   p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1))
   p <- p + scale_x_date(date_labels = "%d %b", date_breaks = '1 month')
