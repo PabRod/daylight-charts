@@ -7,7 +7,6 @@ library(dplyr)
 library(maps)
 library(readr)
 library(lutz)
-library(plyr)
 
 # Functions
 # Auxiliary function that reads the csv file containing information in different languages
@@ -125,28 +124,6 @@ plot_result <- function(data, text, case) {
   p <- p + xlab(text$Date) + ylab(paste(text$Hour, get_case_string(case), sep = " "))
   p <- p + guides(fill = FALSE)
 
-  print(p)
-}
-
-plot_static <- function(data, text, case) {
-  p <- ggplot(data = data, aes(ymin = 0, ymax = 24))
-  p <- p + geom_ribbon(data = subset(data, .id == "standard"), 
-                       aes(x = date, ymin = sunrise_decimal, ymax = sunset_decimal), fill = 'yellow', alpha = 0.5, color = 'yellow')
-  p <- p + geom_line(data = subset(data, .id == "always_winter"), 
-                     aes(x = date, y = sunrise_decimal),
-                     color = "blue")
-  p <- p + geom_line(data = subset(data, .id == "always_summer"), 
-                     aes(x = date, y = sunset_decimal),
-                     color = "red")
-  p <- p + theme_dark()
-  p <- p + theme(axis.text.x = element_text(angle = 45, hjust = 1))
-  p <- p + scale_x_date(date_labels = "%d %b", date_breaks = '1 month')
-  p <- p + scale_y_continuous(breaks = seq(0, 24, 2))
-  p <- p + coord_cartesian(ylim = c(0, 24), expand = FALSE)
-  p <- p + labs(title = text$SunlightHours, subtitle = paste(text$DisplayYear, get_current_year(), sep = ' '))
-  p <- p + xlab(text$Date) + ylab(paste(text$Hour, get_case_string(case), sep = " "))
-  p <- p + guides(fill = FALSE)
-  
   print(p)
 }
 
