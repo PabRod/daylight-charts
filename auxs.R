@@ -141,7 +141,7 @@ plot_result <- function(data, text, case) {
   print(p)
 }
 
-plot_static_city <- function(city_name, regions = regions_generator(), population_threshold = 1e5) {
+plot_static_city <- function(city_name, regions = regions_generator(), population_threshold = 1e5, save_path = "") {
 
   # Create the dataset
   cities_db <- get_towns(regions, pop_threshold = population_threshold)
@@ -153,10 +153,16 @@ plot_static_city <- function(city_name, regions = regions_generator(), populatio
   city <- filter(cities_db, name == city_name)
   times <- times_all(city)
   
-  plot_static(times, text)
+  p <- plot_static(times, text,  city_name)
+  
+  if(save_path != "") { 
+    filename <- paste(save_path, city_name, ".png", sep = "")
+    p + ggsave(filename)
+  } else print(p)
+  
 }
 
-plot_static <- function(data, text) {
+plot_static <- function(data, text, city_name) {
   p <- ggplot(data = data, aes(ymin = 0, ymax = 24))
   p <- p + geom_ribbon(data = subset(data, .id == "standard"), 
                        aes(x = date, ymin = sunrise_decimal, ymax = sunset_decimal), fill = 'yellow', alpha = 0.5, color = 'yellow')
@@ -177,11 +183,9 @@ plot_static <- function(data, text) {
   p <- p + scale_x_date(date_labels = "%d %b", date_breaks = '1 month')
   p <- p + scale_y_continuous(breaks = seq(0, 24, 2))
   p <- p + coord_cartesian(ylim = c(0, 24), expand = FALSE)
-  p <- p + labs(title = text$SunlightHours, subtitle = paste(text$DisplayYear, get_current_year(), sep = ' '))
+  p <- p + labs(title = paste(text$SunlightHours, "en", city_name, sep = " "), subtitle = paste(text$DisplayYear, get_current_year(), sep = ' '))
   p <- p + xlab(text$Date) + ylab(text$Hour)
   p <- p + guides(fill = FALSE)
-  
-  print(p)
 }
 
 get_current_year <- function() {
