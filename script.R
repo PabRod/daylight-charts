@@ -11,4 +11,4 @@ cities_es <- get_towns(c('Spain', 'Canary Islands'), population_threshold)
 city_names <- cities_es$name
 
 
-mclapply(city_names, function(city_name) plot_static_city(city_name, population_threshold = population_threshold, save_path = "./figs/es/"), mc.cores = numCores - 1)
+mclapply(city_names, function(city_name) plot_static_city(city_name, population_threshold = population_threshold, save_path = "./figs/es/", language = "ES"), mc.cores = numCores - 1)
