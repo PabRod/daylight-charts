@@ -184,7 +184,7 @@ plot_static <- function(data, text, city_name) {
   p <- p + scale_x_date(date_labels = "%d %b", date_breaks = '1 month')
   p <- p + scale_y_continuous(breaks = seq(0, 24, 2))
   p <- p + coord_cartesian(ylim = c(0, 24), expand = FALSE)
-  p <- p + labs(title = paste(text$SunlightHours, "en", city_name, sep = " "), subtitle = paste(text$DisplayYear, get_current_year(), sep = ' '))
+  p <- p + labs(title = paste(text$SunlightHours, city_name, sep = " "), subtitle = paste(text$DisplayYear, get_current_year(), sep = ' '))
   p <- p + xlab(text$Date) + ylab(text$Hour)
   p <- p + guides(fill = FALSE)
 }
