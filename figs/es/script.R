@@ -6,7 +6,7 @@ numCores <- parallel::detectCores()
 source('./auxs.R')
 
 # Get the desired city names
-cities_es <- get_towns(c('Spain', 'Canary Islands'), pop_threshold = 5e5)
+cities_es <- get_towns(c('Spain', 'Canary Islands'), pop_threshold = 1e5)
 city_names <- cities_es$name
 
 # Perform create all the plots (if multiple cores are available, this process will be parallelised)
