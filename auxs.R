@@ -153,7 +153,7 @@ plot_static_city <- function(city_name, regions = regions_generator(), populatio
   city <- filter(cities_db, name == city_name)
   times <- times_all(city)
   
-  p <- plot_static(times, text,  city_name)
+  p <- plot_static(times, text, city_name)
   
   if(save_path != "") { 
     filename <- paste(save_path, city_name, ".png", sep = "")
@@ -165,7 +165,8 @@ plot_static_city <- function(city_name, regions = regions_generator(), populatio
 plot_static <- function(data, text, city_name) {
   p <- ggplot(data = data, aes(ymin = 0, ymax = 24))
   p <- p + geom_ribbon(data = subset(data, .id == "standard"), 
-                       aes(x = date, ymin = sunrise_decimal, ymax = sunset_decimal), fill = 'yellow', alpha = 0.5, color = 'yellow')
+                       aes(x = date, ymin = sunrise_decimal, ymax = sunset_decimal), 
+                       fill = 'yellow', alpha = 0.5, color = NA)
   p <- p + geom_line(data = subset(data, .id == "always_winter"), 
                      aes(x = date, y = sunrise_decimal),
                      color = "blue")
