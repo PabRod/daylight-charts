@@ -28,7 +28,7 @@ ui <- fluidPage(
    theme = shinytheme("cerulean"), 
                 
    # Application title
-   titlePanel(text$Title),
+   titlePanel(textOutput('text_title')),
 
    # Sidebar with a slider input for number of bins
    sidebarLayout(
@@ -60,15 +60,20 @@ ui <- fluidPage(
 # Define server logic
 server <- function(input, output, session) {
 
-  # Parameters
+  # Parse language from URL
   observe({
+    # https://stackoverflow.com/questions/32872222/how-do-you-pass-parameters-to-a-shiny-app-via-url
     query <- parseQueryString(session$clientData$url_search)
     if (!is.null(query[["language"]])) {
       language <<- query[["language"]]
-      # updateTextInput(session, "language", value = query[["language"]])
     } else { 
       language <<- "EN" 
     }
+  })
+  
+  # Parameters
+  output$text_title <- reactive({
+    get_text(language)$Title
   })
   
   city_selected <- reactive({
