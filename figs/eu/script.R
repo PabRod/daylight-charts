@@ -8,6 +8,7 @@ source('./auxs.R')
 # Get the desired city names
 cities_eu <- get_towns(regions_generator(), pop_threshold = 5e5)
 city_names <- cities_eu$name
+city_names <- append(city_names, "Santa Cruz de Tenerife")
 
 # Perform create all the plots (if multiple cores are available, this process will be parallelised)
 mclapply(city_names, 
