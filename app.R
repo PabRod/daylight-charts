@@ -58,9 +58,19 @@ ui <- fluidPage(
 )
 
 # Define server logic
-server <- function(input, output) {
+server <- function(input, output, session) {
 
   # Parameters
+  observe({
+    query <- parseQueryString(session$clientData$url_search)
+    if (!is.null(query[["language"]])) {
+      language <<- query[["language"]]
+      # updateTextInput(session, "language", value = query[["language"]])
+    } else { 
+      language <<- "EN" 
+    }
+  })
+  
   city_selected <- reactive({
     city_selected <- filter(cities_db, name %in% input$town_name)
   })
