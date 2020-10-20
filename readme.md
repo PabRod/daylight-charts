@@ -4,7 +4,7 @@ Interactive applet showing the daylight distribution in every UE city with a pop
 [![time](figs/time.png)][app]
 
 ## Static images
-If preferred, static images corresponding to different cities can be found in [`figs/<region>`](https://github.com/PabRod/cambio-de-hora/tree/master/figs).
+If preferred, static images corresponding to different cities can be found in [`figs/<region>`](https://github.com/PabRod/daylight-charts/tree/master/figs).
 
 ![static](figs/eu/Amsterdam.png)
 
