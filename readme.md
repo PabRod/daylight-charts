@@ -27,6 +27,7 @@ plot_static_city("Madrid")
 ```
 
 # More information
-See essay in [Naukas.com](https://fuga.naukas.com/2018/09/02/interactivo-como-me-afecta-el-cambio-de-hora/) (in Spanish).
+- [How is the end of daylight saving time going to affect me?](https://blog.esciencecenter.nl/how-is-the-end-of-daylight-saving-time-going-to-affect-me-2e6e51f96952)
+- [¿Cómo me afecta el cambio de hora?](https://fuga.naukas.com/2018/09/02/interactivo-como-me-afecta-el-cambio-de-hora/) (in Spanish).
 
 [app]: https://pabrod.shinyapps.io/cambio-de-hora/
