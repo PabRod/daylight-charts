@@ -28,6 +28,6 @@ plot_static_city("Madrid")
 
 # More information
 - [How is the end of daylight saving time going to affect me?](https://blog.esciencecenter.nl/how-is-the-end-of-daylight-saving-time-going-to-affect-me-2e6e51f96952)
-- [¿Cómo me afecta el cambio de hora?](https://fuga.naukas.com/2018/09/02/interactivo-como-me-afecta-el-cambio-de-hora/) (in Spanish).
+- [Se acaba el horario de verano: ¿cómo va a afectar a su localidad?](https://theconversation.com/se-acaba-el-horario-de-verano-como-va-a-afectar-a-su-localidad-148112) (in Spanish).
 
 [app]: https://pabrod.shinyapps.io/cambio-de-hora/
