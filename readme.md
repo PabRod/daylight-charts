@@ -1,6 +1,6 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4316939.svg)](https://doi.org/10.5281/zenodo.4316939)
 
-# Daylight distribution in the European Union <img src="https://ec.europa.eu/transport/sites/transport/files/st/st_2.png" width="140" align="right" />
+# Daylight distribution in the European Union <img src="./figs/animated.gif" width="50" align="right" />
 Interactive applet showing the daylight distribution in every UE city with a population of 100000 r larger, ignoring twilight effects. Interactive applet available in [Shinyapps][app]
 
 [![time](figs/time.png)][app]
